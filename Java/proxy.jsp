@@ -6,7 +6,7 @@ java.net.URLEncoder,
 java.net.URLDecoder,
 java.net.MalformedURLException,
 java.io.BufferedReader,
-java.io.ByteArrayOutputStream,
+,java.io.ByteArrayOutputStream,
 java.io.DataInputStream,
 java.io.FileNotFoundException,
 java.io.IOException,
@@ -29,6 +29,7 @@ java.util.List,
 java.util.Iterator,
 java.util.Enumeration,
 java.util.HashMap,
+java.lang.System,
 java.text.SimpleDateFormat" %>
 
 <!-- ----------------------------------------------------------
@@ -197,6 +198,8 @@ java.text.SimpleDateFormat" %>
             }
 
             clientResponse.setStatus(con.getResponseCode());
+            clientResponse.setHeader("Access-Control-Allow-Credentials", "true");
+            clientResponse.setHeader("Access-Control-Allow-Origin", "*");
 
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             final int length = 5000;
@@ -895,14 +898,14 @@ java.text.SimpleDateFormat" %>
         }
 
         public String getUsername(){
-            return this.username;
+            return System.getenv("ARCGIS_USER_NAME");
         }
         public void setUsername(String value){
             this.username = value;
         }
 
         public String getPassword(){
-            return this.password;
+            return System.getenv("ARCGIS_PASSWORD");
         }
         public void setPassword(String value){
             this.password = value;
@@ -937,10 +940,7 @@ java.text.SimpleDateFormat" %>
         }
 
         public String getTokenServiceUri(){
-            if (this.tokenServiceUri == null && tokenServiceMap != null){
-                this.tokenServiceUri = tokenServiceMap.get(this.url);
-            }
-            return this.tokenServiceUri;
+            return "https://www.arcgis.com/sharing/rest/generateToken";
         }
 
         public void setTokenServiceUri(String value){
